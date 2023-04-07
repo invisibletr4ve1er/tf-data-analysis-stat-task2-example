@@ -5,27 +5,19 @@ from scipy.stats import norm, chi2
 
 
 chat_id = 124625853 # Ваш chat ID, не меняйте название переменной
-
 def solution(p: float, x: np.array) -> tuple:
     # Измените код этой функции
     # Это будет вашим решением
     # Не меняйте название функции и её аргументы
-    squared_distances = x**2
- 
-    sum_squared_distances = np.sum(squared_distances)
- 
-    n = len(x)
-    df = n
-
     alpha = 1 - p
-    chi2_low = chi2.ppf(alpha/2, df)
-    chi2_high = chi2.ppf(1 - alpha/2, df)
- 
+    n_2 = 2*len(x)
 
-    sigma2_low = sum_squared_distances / chi2_high
-    sigma2_high = sum_squared_distances / chi2_low
- 
-    sigma_low = np.sqrt(sigma2_low / 39)
-    sigma_high = np.sqrt(sigma2_high / 39)
- 
-    return sigma_low, sigma_high
+    # Calculate the sample standard deviation
+
+    df = n_2-2
+
+    lower_bound = sum(x**2)/chi2.ppf(1-alpha/2,df)
+    upper_bound = sum(x**2)/chi2.ppf(alpha/2, df)
+
+
+    return (np.sqrt(lower_bound/39), np.sqrt(upper_bound/39))
