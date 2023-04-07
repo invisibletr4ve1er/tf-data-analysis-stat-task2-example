@@ -10,17 +10,22 @@ def solution(p: float, x: np.array) -> tuple:
     # Измените код этой функции
     # Это будет вашим решением
     # Не меняйте название функции и её аргументы
-    alpha = 1 - p
+    squared_distances = x**2
+ 
+    sum_squared_distances = np.sum(squared_distances)
+ 
     n = len(x)
+    df = n
 
-    x_bar = np.mean(x)
+    alpha = 1 - p
+    chi2_low = chi2.ppf(alpha/2, df)
+    chi2_high = chi2.ppf(1 - alpha/2, df)
+ 
 
-    s = np.std(x, ddof=1)
-
-    df = n - 1
-
-    lower_bound = (n-1)*s**2/chi2.ppf(1-alpha/2,df)
-    upper_bound = (n-1)*s**2/chi2.ppf(alpha/2, df)
-
-    # Return the result as a tuple
-    return (np.sqrt(lower_bound/39), np.sqrt(upper_bound/39))
+    sigma2_low = sum_squared_distances / chi2_high
+    sigma2_high = sum_squared_distances / chi2_low
+ 
+    sigma_low = np.sqrt(sigma2_low / 39)
+    sigma_high = np.sqrt(sigma2_high / 39)
+ 
+    return sigma_low, sigma_high
