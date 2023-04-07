@@ -14,7 +14,7 @@ def solution(p: float, x: np.array) -> tuple:
 
     # Calculate the sample standard deviation
 
-    df = n_2-2
+    df = n_2
 
     lower_bound = sum(x**2)/chi2.ppf(1-alpha/2,df)
     upper_bound = sum(x**2)/chi2.ppf(alpha/2, df)
